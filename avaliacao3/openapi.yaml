@@ -1,0 +1,123 @@
+openapi: 3.0.1
+info:
+  title: API avaliação 3
+  description: API da terceira avaliação do programa de bolsas
+  version: 0.0.1
+  termsOfService: https://mockapi.io
+  contact:
+    name: Suporte ao Dev
+    email: bruno.potrich_BOLS@compasso.com.br
+    url: https://mockapi.io
+  license:
+    name: 'Lincença: GPLv3'
+    url: https://www.gnu.org/licenses/gpl-3.0.html
+externalDocs:
+  description: Documentação burocrática
+  url: https://mockapi.io
+servers:
+  - url: https://localhost:8082/api/states
+    description: Avaliacao
+paths:
+  /estados:
+    get:
+      summary: Exibe todos os estados ja criados
+      parameters:
+        - in: path
+          name: Regiao
+          schema:
+            type: string
+          required: false
+          description: Exibe os estados da regiao escolhida
+        - in: path
+          name: Populacao
+          schema:
+            type: integer
+          required: false
+          description: Organiza os estados por Populacao (Decrescente)
+        - in: path
+          name: Area
+          schema:
+            type: integer
+          required: false
+          description: Organiza os estados por Area (Descrescente)
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Estados'
+    post:
+      summary: Cria novo estado
+      requestBody:
+        description: Optional description in *Markdown*
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Estados'
+      responses:
+        '201':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Estados'
+  /estados/{id}:
+    parameters:
+      - name: id
+        in: path
+        schema:
+          type: integer
+        required: true
+    get:
+      summary: Recupera um estado pelo ID
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Estado'
+        '404':
+          description: Estado não encontrada
+          content:
+            application/json:
+              example: Not Found
+    put:
+      summary: Atualiza um estado
+      description: Atualiza um estado pelo ID
+      operationId: id
+      responses:
+        default:
+          description: Sucesso
+          
+    delete:
+      summary: Deleta um estado
+      description: Atualiza um estado pelo ID
+      operationId: ''
+      responses:
+        default:
+          description: Sucesso
+security:
+  - auth: []
+components:
+  schemas:
+    Estados:
+      type: object
+      properties:
+        id:
+          type: integer
+        Nome:
+          type: string
+        Regiao:
+          type: string
+        Populacao:
+          type: integer
+        area:
+          type: integer
+  securitySchemes:
+    auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
